@@ -39,6 +39,9 @@ container.resolve(function (users){
 
 
     function ConfigureExpress(app){
+        require('./passport/passport-local');
+
+
         //render every file in public folder
         app.use(express.static('public'));
         app.use(cookieParser());
