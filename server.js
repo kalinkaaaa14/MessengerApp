@@ -7,7 +7,7 @@ const validator = require('express-validator');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const mongoose = require('mongoose');
-const flash = require('flash');
+const flash = require('connect-flash');
 const passport = require('passport');
 
 //./ - тому що в одній директорії як server.js
