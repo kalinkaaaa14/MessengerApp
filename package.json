@@ -1,0 +1,38 @@
+{
+  "name": "messengerapp",
+  "version": "1.0.0",
+  "description": "A chat application built with node, mongo and postgres",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kalinkaaaa14/MessengerApp.git"
+  },
+  "author": "Alina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kalinkaaaa14/MessengerApp/issues"
+  },
+  "homepage": "https://github.com/kalinkaaaa14/MessengerApp#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^3.2.0",
+    "cookie-parser": "^1.4.5",
+    "dependable": "^1.1.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "express-promise-router": "^2.0.0",
+    "express-session": "^1.15.4",
+    "express-validator": "^3.2.1",
+    "flash": "^1.1.0",
+    "lodash": "^4.17.20",
+    "mongoose": "^5.10.18",
+    "nodemon": "^2.0.6",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0"
+  }
+}
