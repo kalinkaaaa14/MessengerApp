@@ -42,6 +42,8 @@ container.resolve(function (users, _){
 
     function ConfigureExpress(app){
         require('./passport/passport-local');
+        require('./passport/passport-facebook');
+        require('./passport/passport-google');
 
         //render every file in public folder
         app.use(express.static('public'));

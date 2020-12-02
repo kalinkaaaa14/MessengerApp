@@ -239,3 +239,21 @@ footer .container .text-muted {
     color: white;
 }
 
+.btn-gplus{
+    background: #e44b34;
+    border-radius: 0;
+    color: #fff;
+    width: 1000px;
+}
+
+.btn-gplus:link, .btn-gplus:visited{
+    color: white;
+    text-decoration: none;
+    background: #e44b34;
+}
+
+.btn-gplus:active, .btn-gplus.hover{
+    background: #e44b34;
+    color: white;
+}
+

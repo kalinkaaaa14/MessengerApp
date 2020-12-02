@@ -6,6 +6,8 @@ module.exports = function (_, passport, User, validator){
           router.get('/', this.indexPage);
           router.get('/signup', this.getSignUp);
           router.get('/home', this.getHomePage);
+          router.get('/auth/facebook', this.getFacebookLogin);
+          router.get('/auth/facebook/callback', this.facebookLogin);
 
 
          // router.post('/signup', User.SignUpValidation, this.postSignUp);
@@ -29,6 +31,14 @@ module.exports = function (_, passport, User, validator){
             console.log(errors);
           return res.render('signup', {title: "Messenger | SignUp", messages: errors, hasErrors: errors.length >0});
         },
+        getFacebookLogin: passport.authenticate('facebook', {
+            scope: 'email'
+        }),
+        facebookLogin: passport.authenticate('facebook', {
+            successRedirect: '/home',
+            failureRedirect: '/signup',
+            failureFlash: true
+        }),
         postValidation: function(req,res,next) {
             const err = validator.validationResult(req);
             const reqErrors = err.array();
