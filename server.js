@@ -3,7 +3,7 @@ const ejs = require('ejs');
 const bodyParser = require('body-parser');
 const http = require('http');
 const cookieParser = require('cookie-parser');
-const validator = require('express-validator');
+//const validator = require('express-validator');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const mongoose = require('mongoose');
@@ -15,9 +15,11 @@ const container = require('./container');
 
 
 //adding configuration for the app
-container.resolve(function (users){
+container.resolve(function (users, _){
+    mongoose.set('useFindAndModify', false);
+    mongoose.set('useCreateIndex', true);
     mongoose.Promise = global.Promise;
-    mongoose.connect('mongodb://localhost/messengerApp');
+    mongoose.connect('mongodb://localhost/messengerApp', {useNewUrlParser: true,  useUnifiedTopology: true});
 
     const app = SetupExpress();
 
@@ -41,7 +43,6 @@ container.resolve(function (users){
     function ConfigureExpress(app){
         require('./passport/passport-local');
 
-
         //render every file in public folder
         app.use(express.static('public'));
         app.use(cookieParser());
@@ -49,7 +50,8 @@ container.resolve(function (users){
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({extended:false}));
 
-        app.use(validator());
+       // app.use(validator());
+
         app.use(session({
             secret: 'thisisasecretkey',
             resave: true,
@@ -58,7 +60,9 @@ container.resolve(function (users){
         }));
 
         app.use(flash());
-    app.use(passport.initialize());
-    app.use(passport.session());
+        app.use(passport.initialize());
+        app.use(passport.session());
+
+        app.locals._ = _;
     }
 });

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -26,14 +26,16 @@
     "dependable": "^1.1.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
-    "express-promise-router": "^2.0.0",
-    "express-session": "^1.15.4",
-    "express-validator": "^3.2.1",
+    "express-promise-router": "^4.0.1",
+    "express-session": "^1.17.1",
+    "express-validator": "^6.7.0",
     "flash": "^1.1.0",
     "lodash": "^4.17.20",
     "mongoose": "^5.10.18",
     "nodemon": "^2.0.6",
-    "passport": "^0.3.2",
-    "passport-local": "^1.0.0"
+    "passport": "^0.4.1",
+    "passport-facebook": "^3.0.0",
+    "passport-local": "^1.0.0",
+    "validator": "^13.5.1"
   }
 }
