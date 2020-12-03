@@ -5,7 +5,7 @@ module.exports = function (_, passport, User, validator){
         SetRouting: function (router){
           router.get('/', this.indexPage);
           router.get('/signup', this.getSignUp);
-          router.get('/home', this.getHomePage);
+
           router.get('/auth/facebook', this.getFacebookLogin);
           router.get('/auth/facebook/callback', this.facebookLogin);
 
@@ -59,9 +59,6 @@ module.exports = function (_, passport, User, validator){
 
             return next();
             // console.log(err);
-        },
-        getHomePage: function (req,res){
-            return res.render('home');
         },
         postSignUp: passport.authenticate('local.signup', {
             successRedirect: '/home',

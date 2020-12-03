@@ -15,7 +15,7 @@ const container = require('./container');
 
 
 //adding configuration for the app
-container.resolve(function (users, _){
+container.resolve(function (users, _, admin, home,group){
     mongoose.set('useFindAndModify', false);
     mongoose.set('useCreateIndex', true);
     mongoose.Promise = global.Promise;
@@ -35,7 +35,9 @@ container.resolve(function (users, _){
         //setup router
         const router = require('express-promise-router')();
         users.SetRouting(router);
-
+        admin.SetRouting(router);
+        home.SetRouting(router);
+        group.SetRouting(router);
         app.use(router);
     }
 
