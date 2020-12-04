@@ -110,7 +110,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="#">Action</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
+                        <li> <a href="/logout"><span class="fa fa-sign-out"></span>Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -119,7 +119,8 @@
 </nav>
 
 <div class="col-md-12">
-
+    <input type="hidden" id="name-user"  value=" <%=user.username%>">
+    <input type="hidden" id="name-image" value=" <%=user.userImage%>">
     <div class="col-md-12">
         <div class="chat_container">
             <div class="row">
@@ -138,7 +139,7 @@
                                         </div>
                                         <div class="content">
                                             <div class="main">
-                                                <h3 class="name">Username</h3>
+                                                <h3 class="name"><%= _.upperFirst(user.username) %></h3>
                                                 <p class="profession-online">
                                                     <i class="fa fa-circle online" aria-hidden="true"></i>
                                                     Online
@@ -173,7 +174,13 @@
                                                     Online Friends <span id="numOfFriends"></span>
                                                 </p>
                                                 <hr style="margin-top:10px" />
+                                                <% if (data.friendsList.length > 0){ %>
+                                                    <% _.forEach(data.friendsList, function (value){ %>
 
+                                                    <div class="friend" hidden>@<%=value.friendName
+                                                        %></div>
+                                                <%}) %>
+                                                <% }%>
                                                 <div class="onlineFriends"></div>
 
                                             </div>
@@ -194,7 +201,7 @@
                         <div class="new_message_head">
                             <div class="pull-left">
                                 <button class="club_name">
-                                    Group Name
+                                    <%= groupName %>
                                 </button>
                             </div>
                             <div class="pull-right">
@@ -316,6 +323,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/group/groupchat.js"></script>
 <script src="/js/group/sendrequest.js"></script>
+<script src="/js/global.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.0.1/mustache.js" integrity="sha512-lVOhRiSNKsseQXm0MgoEOV7efl7ET2+iBw5tRgKsX2BPA2LlkW2WUCsSYVwrrujEsbqNf+tN70z5pEnpnUtqUg==" crossorigin="anonymous"></script>
 </body>
 

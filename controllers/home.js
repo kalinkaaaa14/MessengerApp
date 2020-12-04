@@ -2,9 +2,9 @@ module.exports = function(async, Club, _,Users){
     return {
         SetRouting: function(router){
             router.get('/home', this.homePage);
-           // router.post('/home', this.postHomePage);
+            router.get('/logout', this.logout);
 
-            //router.get('/logout', this.logout);
+            router.post('/home', this.postHomePage);
         },
 
         homePage: function(req, res){
@@ -88,34 +88,34 @@ module.exports = function(async, Club, _,Users){
              })
         },
 
-        // postHomePage: function(req, res){
-        //     async.parallel([
-        //         function(callback){
-        //             Club.updateOne({
-        //                 '_id':req.body.id,
-        //                 'fans.username': {$ne: req.user.username}
-        //             }, {
-        //                 $push: {fans: {
-        //                         username: req.user.username,
-        //                         email: req.user.email
-        //                     }}
-        //             }, (err, count) => {
-        //                 callback(err, count);
-        //             });
-        //         },
-        //     ], (err, results) => {
-        //         res.redirect('/home');
-        //     });
+         postHomePage: function(req, res){
+             async.parallel([
+                function(callback){
+                     Club.updateOne({
+                         '_id':req.body.id,
+                         'fans.username': {$ne: req.user.username}
+                    }, {
+                         $push: {fans: {
+                                 username: req.user.username,
+                                 email: req.user.email
+                             }}
+                     }, (err, count) => {
+                         callback(err, count);
+                     });
+                 },
+             ], (err, results) => {
+                 res.redirect('/home');
+             });
         //
         //     FriendResult.PostRequest(req, res, '/home');
-        // },
+         },
 
-        // logout: function(req, res){
-        //     req.logout();
-        //     req.session.destroy((err) => {
-        //         res.redirect('/');
-        //     });
-        // }
+        logout: function(req, res){
+            req.logout();
+            req.session.destroy((err) => {
+                res.redirect('/');
+            });
+        }
     }
 }
 
