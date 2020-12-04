@@ -9,6 +9,8 @@ const MongoStore = require('connect-mongo')(session);
 const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const passport = require('passport');
+const socketIO = require('socket.io');
+const {Users} = require('./helpers/UsersClass');
 
 //./ - тому що в одній директорії як server.js
 const container = require('./container');
@@ -26,12 +28,16 @@ container.resolve(function (users, _, admin, home,group){
     function SetupExpress(){
         const app = express();
         const server = http.createServer(app);
+        const io = socketIO(server);
+
         server.listen(3000, function(){
             console.log("Listening on port 3000");
         });
 
         ConfigureExpress(app);
 
+        require('./socket/groupchat')(io, Users);
+        require('./socket/friend')(io);
         //setup router
         const router = require('express-promise-router')();
         users.SetRouting(router);

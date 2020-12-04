@@ -1,4 +1,4 @@
-module.exports = function(async, Club, _){
+module.exports = function(async, Club, _,Users){
     return {
         SetRouting: function(router){
             router.get('/home', this.homePage);
@@ -25,14 +25,14 @@ module.exports = function(async, Club, _){
                         callback(err, newResult) ;
                     });
                 },
-            //
-            //     function(callback){
-            //         Users.findOne({'username': req.user.username})
-            //             .populate('request.userId')
-            //             .exec((err, result) => {
-            //                 callback(err, result);
-            //             })
-            //     },
+
+                function(callback){
+                    Users.findOne({'username': req.user.username})
+                        .populate('request.userId')
+                        .exec((err, result) => {
+                            callback(err, result);
+                        })
+                }
             //
             //     function(callback){
             //         const nameRegex = new RegExp("^" + req.user.username.toLowerCase(), "i")
@@ -70,8 +70,7 @@ module.exports = function(async, Club, _){
              ], (err, results) => {
                  const res1 = results[0];
                  const res2 = results[1];
-                 console.log(res2);
-                 // const res3 = results[2];
+                 const res3 = results[2];
                  // const res4 = results[3];
                  //
                   const dataChunk  = [];
@@ -81,7 +80,7 @@ module.exports = function(async, Club, _){
                   }
                  const countrySort = _.sortBy(res2, '_id');
 
-                 res.render('home', {title: 'Messenger-Home', data:dataChunk, country: countrySort});
+                 res.render('home', {title: 'Messenger-Home', user: req.user, chunks:dataChunk, country: countrySort, data:res3});
                  //
                  //
                  //

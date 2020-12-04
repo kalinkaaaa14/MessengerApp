@@ -25,16 +25,88 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/home">Footballkik</a>
+            <a class="navbar-brand" href="/home">Messenger App</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
+
             </ul>
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right" id="reload">
+                <li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="glyphicon fa fa-bell nav-glyphicon"></span><b class="caret"></b>
+                        <% if (data.totalRequest >0 ){%>
+                            <span class="label label-primary nav-label-icon"><%= data.totalRequest%></span>
+                        <% }else {%>
+                            <span class="label label-primary nav-label-icon" style="display: none"></span>
+                        <% }%>
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li>
+                            <div class="navbar-login" id="requestBar">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="dropdown-tag">
+                                            <h3 class="text-center dropdown-tag-head" >
+                                                Friend Requests
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <% if (data.totalRequest >0 ){%>
+                                    <% _.forEach(data.request,function(val){%>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <p class="text-center">
+                                                <img src="https://placehold.it/300x300" class="img-circle img-responsive dropdown-img" />
+                                            </p>
+                                        </div>
+                                        <div class="col-md-9 pleft-0">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="col-md-12">
+                                                        <p class="text-left">
+                                                            <strong id=""><%= val.username %></strong>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                                <input type="hidden" name="senderId" id ="senderId" value="<%=val.userId._id%>">
+                                                                <input type="hidden" name="senderName" id="senderName" value="<%=val.username%>">
+                                                                <button type="submit" name="accept" id="accept_friend" class="btn btn-default drop-accept accept"><i class="fa fa-check" aria-hidden="true"></i> Accept</button>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                                <input type="hidden" name = "user_Id" id="user_Id" value="<%=val.userId._id%>">
+                                                                <button type="submit" name="cancel" class="btn drop-cancel remove" id="cancel_friend">
+                                                                    <i class="fa fa-times" aria-hidden="true"></i> Cancel
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <% })%>
+                                    <% } else{ %>
+                                    <p class="text-center">No Friend Request</p>
+                                    <% }%>
+                                </div>
+                            </div>
+                        </li>
+
+                    </ul>
+                </li>
                 <li><a href="#">Members</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= user.username%>  <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">Action</a></li>
                         <li role="separator" class="divider"></li>
@@ -46,9 +118,7 @@
     </div>
 </nav>
 
-
 <div class="col-md-12">
-
 
     <div class="col-md-12">
         <div class="chat_container">
@@ -68,7 +138,7 @@
                                         </div>
                                         <div class="content">
                                             <div class="main">
-                                                <h3 class="name">Username || Fullname</h3>
+                                                <h3 class="name">Username</h3>
                                                 <p class="profession-online">
                                                     <i class="fa fa-circle online" aria-hidden="true"></i>
                                                     Online
@@ -132,12 +202,41 @@
                         </div>
 
                         <div class="chat_area">
+<ul id="messages" class="list-unstyled">
 
+<!--    <li class="left">-->
+<!--        <span class="chat-img1 pull-left">-->
+<!--            <img src="http://placehold.it/300x300" class="img-circle" alt="">-->
+<!--        </span>-->
+<!--        <div class="chat-body1">-->
+<!--            <span class="chat-name">-->
+<!--                Username-->
+<!--            </span>-->
+<!--            <br>-->
+<!--            Message Body-->
+<!--        </div>-->
+<!--    </li>-->
+</ul>
+                            <script id="message-template" type="text/template">
+                                <li class="left">
+                                            <span class="chat-img1 pull-left">
+                                                <img src="http://placehold.it/300x300" class="img-circle" alt="">
+                                            </span>
+                                            <div class="chat-body1">
+                                                <span class="chat-name">
+                                                   {{ sender}}
+                                                </span>
+                                                <br>
+                                               {{ text }}
+                                            </div>
+                                        </li>
+                            </script>
                         </div>
 
                         <div class="message_write">
-                            <form action="#" id="message-form" method="post">
-
+                            <form id="message-form" method="post">
+                                <input type="hidden" id="groupName" value =" <%= groupName%>">
+                                <input type="hidden" id = "sender" value="<%=user.username%>">
                                 <textarea class="form-control" name="message" id="msg" placeholder="Type a message"></textarea>
                                 <div class="clearfix"></div>
                                 <div class="chat_bottom">
@@ -177,7 +276,8 @@
                                     <div class="modal-body">
                                         <form action="" method="get" id="add_friend">
                                             <input type="hidden" name="receiverName" id="receiverName" value="">
-                                            <input type="hidden" name="sender-name" id="sender-name" value="">
+                                            <input type="hidden" name="sender-name" id="sender-name" value="<%= user.username%>">
+
                                             <button type="submit" id="friend-add" class="btn add"><i class="fa fa-user"></i> Add Friend</button>
 
                                             <a id="nameLink" class="btn ">View Profile</a>
@@ -213,6 +313,10 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/group/groupchat.js"></script>
+<script src="/js/group/sendrequest.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.0.1/mustache.js" integrity="sha512-lVOhRiSNKsseQXm0MgoEOV7efl7ET2+iBw5tRgKsX2BPA2LlkW2WUCsSYVwrrujEsbqNf+tN70z5pEnpnUtqUg==" crossorigin="anonymous"></script>
 </body>
 
 </html>
