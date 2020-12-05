@@ -13,6 +13,7 @@ const simpleDependencies = [
     ['async', 'async'],
     ['aws', './helpers/AWSUpload'],
     ['Users', './models/user'],
+    ['Message', './models/message']
 
 ];
 
