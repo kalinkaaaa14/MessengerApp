@@ -3,24 +3,24 @@
 module.exports = function (_, passport, User, validator){
     return {
         SetRouting: function (router){
-          router.get('/', this.indexPage);
-          router.get('/signup', this.getSignUp);
+            router.get('/', this.indexPage);
+            router.get('/signup', this.getSignUp);
 
-          router.get('/auth/facebook', this.getFacebookLogin);
-          router.get('/auth/facebook/callback', this.facebookLogin);
+            router.get('/auth/facebook', this.getFacebookLogin);
+            router.get('/auth/facebook/callback', this.facebookLogin);
 
 
-         // router.post('/signup', User.SignUpValidation, this.postSignUp);
+            // router.post('/signup', User.SignUpValidation, this.postSignUp);
             router.post('/signup', [
                 validator.check('username').not().isEmpty().isLength({min: 5}).withMessage('Username is required and must be at leadt 5 characters'),
-            validator.check('email').not().isEmpty().isEmail().withMessage('Email is invalid'),
+                validator.check('email').not().isEmpty().isEmail().withMessage('Email is invalid'),
                 validator.check('password').not().isEmpty().withMessage("Password is required")
             ], this.postValidation, this.postSignUp);
             router.post('/', [
                 validator.check('email').not().isEmpty().isEmail().withMessage('Email is invalid'),
                 validator.check('password').not().isEmpty().withMessage("Password is required")
             ], this.postValidation, this.postLogin);
-         // router.post('/', User.LoginValidation, this.postLogin);
+            // router.post('/', User.LoginValidation, this.postLogin);
         },
         indexPage: function(req,res){
             const errors = req.flash('error');
@@ -29,7 +29,7 @@ module.exports = function (_, passport, User, validator){
         getSignUp: function (req, res){
             const errors = req.flash('error');
             console.log(errors);
-          return res.render('signup', {title: "Messenger | SignUp", messages: errors, hasErrors: errors.length >0});
+            return res.render('signup', {title: "Messenger | SignUp", messages: errors, hasErrors: errors.length >0});
         },
         getFacebookLogin: passport.authenticate('facebook', {
             scope: 'email'
@@ -56,9 +56,11 @@ module.exports = function (_, passport, User, validator){
                     res.redirect('/');
                 }
             }
-
             return next();
             // console.log(err);
+        },
+        getHomePage: function (req,res){
+            return res.render('home');
         },
         postSignUp: passport.authenticate('local.signup', {
             successRedirect: '/home',

@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <title>Messenger - Home</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -20,22 +18,22 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/home">Messenger App</a>
+            <a class="navbar-brand" href="/home">Footballkik</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-
-            </ul>
             <ul class="nav navbar-nav navbar-right" id="reload">
+                <li><a href="/latest-football-news">Football News</a></li>
+
                 <li>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <span class="glyphicon fa fa-bell nav-glyphicon"></span><b class="caret"></b>
-                        <% if (data.totalRequest >0 ){%>
-                            <span class="label label-primary nav-label-icon"><%= data.totalRequest%></span>
-                        <% }else {%>
-                            <span class="label label-primary nav-label-icon" style="display: none"></span>
-                        <% }%>
+                        <% if(data.totalRequest > 0) {%>
+                            <span class="label label-primary nav-label-icon"><%= data.request.length %></span>
+                        <% } else { %>
+                            <span class="label label-primary nav-label-icon" style="display:none"></span>
+                        <% } %>
+
                     </a>
 
                     <ul class="dropdown-menu">
@@ -52,12 +50,12 @@
                                 </div>
 
                                 <div class="col-md-12">
-                                    <% if (data.totalRequest >0 ){%>
-                                        <% _.forEach(data.request,function(val){%>
+                                    <% if(data.request.length > 0) {%>
+                                        <% _.forEach(data.request, function(val) { %>
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <p class="text-center">
-                                                        <img src="https://placehold.it/300x300" class="img-circle img-responsive dropdown-img" />
+                                                        <img src="https://chatapprp.s3.amazonaws.com/<%= val.userId.userImage %>" class="img-circle img-responsive dropdown-img" />
                                                     </p>
                                                 </div>
                                                 <div class="col-md-9 pleft-0">
@@ -71,49 +69,52 @@
                                                             <div class="col-md-12">
                                                                 <div class="row">
                                                                     <div class="col-md-6 col-sm-6 col-xs-6">
-                                                                        <input type="hidden" name="senderId" id ="senderId" value="<%=val.userId._id%>">
-                                                                        <input type="hidden" name="senderName" id="senderName" value="<%=val.username%>">
+                                                                        <input type="hidden" name="senderId" id="senderId" value="<%= val.userId._id %>">
+                                                                        <input type="hidden" name="senderName" id="senderName" value="<%= val.username %>">
                                                                         <button type="submit" name="accept" id="accept_friend" class="btn btn-default drop-accept accept"><i class="fa fa-check" aria-hidden="true"></i> Accept</button>
                                                                     </div>
                                                                     <div class="col-md-6 col-sm-6 col-xs-6">
-                                                                        <input type="hidden" name = "user_Id" id="user_Id" value="<%=val.userId._id%>">
+                                                                        <input type="hidden" name="user_Id" id="user_Id" value="<%= val.userId._id %>">
                                                                         <button type="submit" name="cancel" class="btn drop-cancel remove" id="cancel_friend">
                                                                             <i class="fa fa-times" aria-hidden="true"></i> Cancel
                                                                         </button>
                                                                     </div>
                                                                 </div>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <hr />
-                                        <% })%>
-                                    <% } else{ %>
+                                        <% }) %>
+                                    <% } else { %>
                                         <p class="text-center">No Friend Request</p>
-                                    <% }%>
+                                    <% } %>
                                 </div>
                             </div>
                         </li>
 
                     </ul>
                 </li>
+
                 <li>
-                <% var numberOfTrue =0%>
-                <% for (var i=0; i<chat.length; i++){
-                    if(chat[i].body.isRead === false) {
-                        numberOfTrue = numberOfTrue+1;
-                    }
-                } %>
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <span class="fa fa-globe "></span> <b class="caret"></b>
-                    <% if(numberOfTrue >0){%>
-                        <span class="label label-primary nav-label-icon" id=""><%= numberOfTrue%></span>
-                    <%} else {%>
-                        <span class="label label-primary nav-label-icon" id=""></span>
-                    <%}%>
-                </a>
+                    <% var numberOfTrue = 0 %>
+
+                    <% for(var i = 0; i < chat.length; i++) {
+                        if(chat[i].body.isRead === false){
+                            numberOfTrue = numberOfTrue + 1
+                        }
+                    } %>
+
+
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="fa fa-globe "></span> <b class="caret"></b>
+                        <% if(numberOfTrue !== 0) {%>
+                            <span class="label label-primary nav-label-icon" id=""><%= numberOfTrue %></span>
+                        <% } else { %>
+                            <span class="label label-primary nav-label-icon" id=""></span>
+                        <% } %>
+                    </a>
                     <ul class="dropdown-menu dmenu">
                         <li>
                             <div class="navbar-login">
@@ -127,29 +128,66 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-
-                                    <a href="">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <p class="text-center">
-                                                    <img src="https://placehold.it/300x300" class="img-circle img-responsive dropdown-img" />
-                                                </p>
-                                            </div>
-                                            <div class="col-md-9 pleft-0">
-                                                <div class="row">
-                                                    <div class="col-md-12 textRow">
-                                                        <div class="col-md-12" id="textRow">
-                                                            <p class="text-left drop-name">
-                                                                <strong>Sender Name</strong>
+                                    <% if(chat.length > 0) {%>
+                                        <% _.forEach(chat, function(val) { %>
+                                            <% if(user.username !== val.body.senderName) {%>
+                                                <a data-value="<%= val.body._id %>" id="messageLink" href="/chat/<%= _.lowerCase(val.body.senderName) %>.<%= _.lowerCase(user.username) %>">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <p class="text-center">
+                                                                <img src="https://chatapprp.s3.amazonaws.com/<%= val.body.sender.userImage %>" class="img-circle img-responsive dropdown-img" />
                                                             </p>
-                                                            Body
+                                                        </div>
+                                                        <div class="col-md-9 pleft-0">
+                                                            <div class="row">
+                                                                <div class="col-md-12 textRow">
+                                                                    <div class="col-md-12" id="textRow">
+                                                                        <p class="text-left drop-name">
+                                                                            <% if(user.username !== val.body.receiverName) {%>
+                                                                                <strong><%= val.body.receiverName %></strong>
+                                                                            <% } else { %>
+                                                                                <strong><%= val.body.senderName %></strong>
+                                                                            <% } %>
+                                                                        </p>
+                                                                        <input type="hidden" name="chatId" id="chatId" value="<%= val.body._id %>">
+                                                                        <%= val.body.message %>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <hr class="dropdown-divider" />
+                                                </a>
+                                            <% } else if(user.username === val.body.senderName){ %>
+                                                <a data-value="<%= val.body._id %>" id="messageLink" href="/chat/<%= _.lowerCase(val.body.receiverName) %>.<%= _.lowerCase(user.username) %>">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <p class="text-center">
+                                                                <img src="https://chatapprp.s3.amazonaws.com/<%= val.body.receiver.userImage %>" class="img-circle img-responsive dropdown-img" />
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-md-9 pleft-0">
+                                                            <div class="row">
+                                                                <div class="col-md-12 textRow">
+                                                                    <div class="col-md-12" id="textRow">
+                                                                        <p class="text-left drop-name">
+                                                                            <% if(user.username !== val.body.receiverName) {%>
+                                                                                <strong><%= val.body.receiverName %></strong>
+                                                                            <% } else { %>
+                                                                                <strong><%= val.body.senderName %></strong>
+                                                                            <% } %>
+                                                                        </p>
+                                                                        <input type="hidden" name="chatId" id="chatId" value="<%= val.body._id %>">
+                                                                        <%= val.body.message %>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <hr class="dropdown-divider" />
+                                            <% } %>
+                                        <% })%>
+                                    <% } %>
 
                                 </div>
                             </div>
@@ -158,13 +196,15 @@
                     </ul>
 
                 </li>
-                <li><a href="#">Members</a></li>
+
+
+                <li><a href="/members">Members</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= user.username%>  <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= user.username %> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
+                        <li><a href="/settings/profile"><span class="fa fa-user"> Profile</span></a></li>
                         <li role="separator" class="divider"></li>
-                        <li> <a href="/logout"><span class="fa fa-sign-out"></span>Logout</a></li>
+                        <li><a href="/logout"><span class="fa fa-sign-out"></span> Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -172,9 +212,11 @@
     </div>
 </nav>
 
+
+
 <div class="col-md-12">
-    <form action="/results" method="post">
-        <div class="form-group ad-30" style="margin-top:8px;">
+    <form action="#" method="post">
+npm         <div class="form-group ad-30" style="margin-top:8px;">
             <div class="input-group search-style">
                 <input class="form-control new-search-bar"  name="country" id="search" placeholder="Enter Your Club Name" type="text">
                 <span class="input-group-btn">
@@ -184,10 +226,7 @@
         </div>
     </form>
 </div>
-
 <div class="col-md-12">
-    <input type="hidden" id="name-user" value="<%= user.username %>">
-    <input type="hidden" id="name-image" value="<%= user.userImage %>">
     <div class="">
         <div class="row">
             <div class="col-md-3">
@@ -195,7 +234,7 @@
                     <div class="col-md-12">
                         <div class="filter-container">
                             <div class="card">
-                                <form action="/results" method="post">
+                                <form action="#" method="post">
                                     <div class="content">
                                         <p class="filter">
                                             FILTER
@@ -203,9 +242,9 @@
                                         <hr/>
                                         <select class="form-control" name="country" id="country" >
                                             <option value="">Filter By Country</option>
-                                            <% _.forEach(country, function(value) { %>
-                                                <option value="<%= value._id %>"><%= value._id %></option>
-                                            <% }) %>
+                                            <% _.forEach(country, function(value){%>
+                                                <option value=" <%= value._id%>"> <%= value._id%></option>
+                                            <% })%>
                                         </select>
                                         <div class="clearfix"></div>
                                         <button class="btn add-apply">Apply</button>
@@ -219,30 +258,24 @@
 
             <div class="col-md-9">
                 <div>
-                    <% _.forEach(chunks, function(val) { %>
-                        <div class="category-list">
-                            <div class="row">
-                                <% _.forEach(val, function(val2) { %>
-                                    <form action="/home" method="post" id="favorite">
+                        <% _.forEach(chunks, function(val) {%>
+                            <div class="category-list">
+                                <div class="row">
+                                    <% _.forEach(val, function(val2) {%>
+                                    <form action="#" method="post" id="add-fav">
                                         <div class="item col-md-4">
-                                            <a style="text-decoration:none" href="/group/<%= val2.name.replace(/ /g, "-") %>">
+                                            <a style="text-decoration: none" href="/group/<%=val2.name%>">
                                                 <div class="thumbnail">
-                                                    <img src="https://chatapprp.s3.amazonaws.com/<%= val2.image %>" alt="">
+                                                    <img src = "https://chatapprp.s3.amazonaws.com/<%=val2.image%>">
                                                     <div class="caption">
-                                                        <h4>
-                                                            <%= val2.name %> (<%= val2.fans.length %>)
-                                                        </h4>
-
+                                                        <h4><%= val2.name%></h4>
                                                         <div class="row">
                                                             <div class="col-xs-12 col-md-6">
                                                                 <p>
-                                                                    <%= val2.country %>
+                                                                    <%= val2.country%>
                                                                 </p>
                                                             </div>
-
                                                             <div class="col-xs-12 col-md-6">
-                                                                <input type="hidden" name="id" id="id" value="<%= val2._id %>">
-                                                                <input type="hidden" name="clubName" id="club_Name" value="<%= val2.name %>">
                                                                 <button class="btn add-fav">
                                                                     Add To Favorite
                                                                 </button>
@@ -253,24 +286,23 @@
                                             </a>
                                         </div>
                                     </form>
-                                <% }) %>
+                                    <% })%>
+                                </div>
                             </div>
-                        </div>
-                    <% }) %>
+                    <%}) %>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script src="/socket.io/socket.io.js"></script>
 <script src="/js/group/sendrequest.js"></script>
-<script src="/js/home.js"></script>
-<script src="/js/global.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/global.js"> </script>
+<script src="/js/home.js"> </script>
+<script src="/js/deparam.js"></script>
+<script src="/js/messageLink.js"> </script>
 </body>
 </html>
-

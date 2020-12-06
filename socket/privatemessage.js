@@ -5,7 +5,7 @@ module.exports = function(io){
              socket.join(pm.room1);
              socket.join(pm.room2);
 
-             callback();
+             //callback();
          });
 
         socket.on('private message', (message, callback) => {
@@ -14,15 +14,14 @@ module.exports = function(io){
                  sender: message.sender
              });
 
-    //         io.emit('message display', {});
-    //
+             io.emit('message display', {});
 
              callback();
          });
-    //
-    //     socket.on('refresh', function(){
-    //         io.emit('new refresh', {});
-    //     });
+
+        socket.on('refresh', function(){
+            io.emit('new refresh', {});
+        });
 
      });
 }

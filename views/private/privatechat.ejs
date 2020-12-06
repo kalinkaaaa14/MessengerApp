@@ -63,7 +63,7 @@
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <p class="text-center">
-                                                        <img src="https://footballkik.s3.amazonaws.com/<%= val.userId.userImage %>" class="img-circle img-responsive dropdown-img" />
+                                                        <img src="https://chatapprp.s3.amazonaws.com/<%= val.userId.userImage %>" class="img-circle img-responsive dropdown-img" />
                                                     </p>
                                                 </div>
                                                 <div class="col-md-9 pleft-0">
@@ -143,7 +143,7 @@
                                                     <div class="row">
                                                         <div class="col-md-3">
                                                             <p class="text-center">
-                                                                <img src="https://footballkik.s3.amazonaws.com/<%= val.body.sender.userImage %>" class="img-circle img-responsive dropdown-img" />
+                                                                <img src="https://chatapprp.s3.amazonaws.com/<%= val.body.sender.userImage %>" class="img-circle img-responsive dropdown-img" />
                                                             </p>
                                                         </div>
                                                         <div class="col-md-9 pleft-0">
@@ -170,7 +170,7 @@
                                                     <div class="row">
                                                         <div class="col-md-3">
                                                             <p class="text-center">
-                                                                <img src="https://footballkik.s3.amazonaws.com/<%= val.body.receiver.userImage %>" class="img-circle img-responsive dropdown-img" />
+                                                                <img src="https://chatapprp.s3.amazonaws.com/<%= val.body.receiver.userImage %>" class="img-circle img-responsive dropdown-img" />
                                                             </p>
                                                         </div>
                                                         <div class="col-md-9 pleft-0">
@@ -240,7 +240,7 @@
 
                                         </div>
                                         <div class="user cover-img">
-                                            <img src="https://footballkik.s3.amazonaws.com/<%= user.userImage %>" class="img-circle" alt="">
+                                            <img src="https://chatapprp.s3.amazonaws.com/<%= user.userImage %>" class="img-circle" alt="">
                                         </div>
                                         <div class="content">
                                             <div class="main">
@@ -312,33 +312,33 @@
 
                         <div class="chat_area">
                             <ul id="messages" class="list-unstyled">
-                                <% if(chats.length > 0) {%>
-                                    <% _.forEach(chats, function(val) { %>
-                                        <% if(name === val.receiver.username.toLowerCase()) {%>
+                                <% if(chats.length >0){%>
+                                <% _.forEach(chats, function (val){ %>
+                                    <% if (name === val.receiver.username.toLowerCase()){%>
                                             <li class="left">
                                        <span class="chat-img1 pull-left">
-                                           <img src="http://placehold.it/300x300" class="img-circle" alt="">
+                                           <img src = "http://placehold.it/300x300" class="img-circle" alt="">
                                        </span>
                                                 <div class="chat-body1">
-                                                    <span class="chat-name"><%= val.senderName %></span>
+                                                    <span class="chat-name"><%= val.senderName%></span>
                                                     <br>
-                                                    <%= val.message %>
+                                                    <%= val.message%>
                                                 </div>
                                             </li>
-                                        <% } else if(name === val.sender.username.toLowerCase()) {%>
+                                    <% } else if( name === val.sender.username.toLowerCase()){%>
                                             <li class="left">
-                                           <span class="chat-img1 pull-left">
-                                               <img src="http://placehold.it/300x300" class="img-circle" alt="">
-                                           </span>
+                                       <span class="chat-img1 pull-left">
+                                           <img src = "http://placehold.it/300x300" class="img-circle" alt="">
+                                       </span>
                                                 <div class="chat-body1">
-                                                    <span class="chat-name"><%= val.senderName %></span>
+                                                    <span class="chat-name"><%= val.senderName%></span>
                                                     <br>
-                                                    <%= val.message %>
+                                                    <%= val.message%>
                                                 </div>
                                             </li>
-                                        <% } %>
-                                    <% }) %>
-                                <% } %>
+                                    <% }%>
+<% })%>
+                                <% }%>
                             </ul>
 
                             <script id="message-template" type="text/template">

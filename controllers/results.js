@@ -58,10 +58,9 @@ module.exports = function(async, Club, Users){
         searchMembers: function(req, res){
             async.parallel([
                 function(callback){
+                //gi -globally ignoring case
                     const regex = new RegExp((req.body.username), 'gi');
-
                     Users.find({'username': regex}, (err, result) => {
-
                         callback(err, result);
                     });
                 }

@@ -1,4 +1,4 @@
-module.exports = function(async, Club, _,Users){
+module.exports = function(async, Club, _,Users,Message, FriendResult){
     return {
         SetRouting: function(router){
             router.get('/home', this.homePage);
@@ -8,7 +8,6 @@ module.exports = function(async, Club, _,Users){
         },
 
         homePage: function(req, res){
-
              async.parallel([
                 function(callback){
                      Club.find({}, (err, result) => {
@@ -32,47 +31,48 @@ module.exports = function(async, Club, _,Users){
                         .exec((err, result) => {
                             callback(err, result);
                         })
-                }
-            //
-            //     function(callback){
-            //         const nameRegex = new RegExp("^" + req.user.username.toLowerCase(), "i")
-            //         Message.aggregate([
-            //                 {$match:{$or:[{"senderName":nameRegex}, {"receiverName":nameRegex}]}},
-            //                 {$sort:{"createdAt":-1}},
-            //                 {
-            //                     $group:{"_id":{
-            //                             "last_message_between":{
-            //                                 $cond:[
-            //                                     {
-            //                                         $gt:[
-            //                                             {$substr:["$senderName",0,1]},
-            //                                             {$substr:["$receiverName",0,1]}]
-            //                                     },
-            //                                     {$concat:["$senderName"," and ","$receiverName"]},
-            //                                     {$concat:["$receiverName"," and ","$senderName"]}
-            //                                 ]
-            //                             }
-            //                         }, "body": {$first:"$$ROOT"}
-            //                     }
-            //                 }], function(err, newResult){
-            //                 const arr = [
-            //                     {path: 'body.sender', model: 'User'},
-            //                     {path: 'body.receiver', model: 'User'}
-            //                 ];
-            //
-            //                 Message.populate(newResult, arr, (err, newResult1) => {
-            //                     callback(err, newResult1);
-            //                 });
-            //             }
-            //         )
-            //     },
-            //
+                },
+
+                function(callback){
+                    const nameRegex = new RegExp("^" + req.user.username.toLowerCase(), "i")
+                    Message.aggregate([
+                            {$match:{$or:[{"senderName":nameRegex}, {"receiverName":nameRegex}]}},
+                            {$sort:{"createdAt":-1}},
+                            {
+                                $group:{"_id":{
+                                        "last_message_between":{
+                                            $cond:[
+                                                {
+                                                    $gt:[
+                                                        {$substr:["$senderName",0,1]},
+                                                        {$substr:["$receiverName",0,1]}]
+                                                },
+                                                {$concat:["$senderName"," and ","$receiverName"]},
+                                                {$concat:["$receiverName"," and ","$senderName"]}
+                                            ]
+                                        }
+                                    }, "body": {$first:"$$ROOT"}
+                                }
+                            }], function(err, newResult){
+                        callback(err,newResult);
+                            // const arr = [
+                            //     {path: 'body.sender', model: 'User'},
+                            //     {path: 'body.receiver', model: 'User'}
+                            // ];
+
+                            // Message.populate(newResult, arr, (err, newResult1) => {
+                            //     callback(err, newResult1);
+                            // });
+                        }
+                    )
+                },
+
              ], (err, results) => {
                  const res1 = results[0];
                  const res2 = results[1];
                  const res3 = results[2];
-                 // const res4 = results[3];
-                 //
+                 const res4 = results[3];
+
                   const dataChunk  = [];
                   const chunkSize = 3;
                   for (let i = 0; i < res1.length; i += chunkSize){
@@ -80,11 +80,9 @@ module.exports = function(async, Club, _,Users){
                   }
                  const countrySort = _.sortBy(res2, '_id');
 
-                 res.render('home', {title: 'Messenger-Home', user: req.user, chunks:dataChunk, country: countrySort, data:res3});
-                 //
-                 //
-                 //
-                 // res.render('home', {title: 'Footballkik - Home', user:req.user, chunks: dataChunk, country: countrySort, data:res3, chat:res4});
+                 res.render('home', {title: 'Messenger-Home', user: req.user, chunks:dataChunk, country: countrySort,
+                     data:res3, chat:res4});
+
              })
         },
 
@@ -106,8 +104,8 @@ module.exports = function(async, Club, _,Users){
              ], (err, results) => {
                  res.redirect('/home');
              });
-        //
-        //     FriendResult.PostRequest(req, res, '/home');
+
+             FriendResult.PostRequest(req, res, '/home');
          },
 
         logout: function(req, res){

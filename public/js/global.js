@@ -33,7 +33,7 @@ $(document).ready(function(){
 
         for(var i = 0; i < users.length; i++){
             //бо перший елемент " "
-            let userName = users[i].name.substr(1);
+            let userName = users[i].name;
             if(friend.indexOf(userName) > -1){
                 arr.push(users[i]);
 

@@ -1,4 +1,4 @@
-module.exports = function(async, Users,Message){
+module.exports = function(async, Users,Message, FriendResult){
     return {
         SetRouting: function(router){
             router.get('/chat/:name', this.getchatPage);
@@ -64,25 +64,26 @@ module.exports = function(async, Users,Message){
             //                 });
                          }
                      )
-               }
-            //
-            //     function(callback){
-            //         Message.find({'$or':[{'senderName':req.user.username}, {'receiverName':req.user.username}]})
-            //             .populate('sender')
-            //             .populate('receiver')
-            //             .exec((err, result3) => {
-            //                 callback(err, result3)
-            //             })
-            //     }
+               },
+                function(callback){
+                    Message.find({'$or':[{'senderName':req.user.username}, {'receiverName':req.user.username}]})
+                        .populate('sender')
+                        .populate('receiver')
+                        .exec((err, result3) => {
+                            console.log(result3);
+                            callback(err, result3)
+                        })
+                }
              ], (err, results) => {
                 const result1 = results[0];
                 const result2 = results[1];
-            //     const result3 = results[2];
-            //
-            //     const params = req.params.name.split('.');
-            //     const nameParams = params[0];
-            //
-                 res.render('private/privatechat', {title: 'Footballkik - Private Chat', user:req.user, data: result1, chat: result2});
+                const result3 = results[2];
+
+                const params = req.params.name.split('.');
+                 const nameParams = params[0];
+
+                 res.render('private/privatechat', {title: 'Footballkik - Private Chat', user:req.user, data: result1, chat: result2,
+                     chats:result3, name: nameParams});
 
         });
         },
@@ -92,7 +93,7 @@ module.exports = function(async, Users,Message){
              const nameParams = params[0];
              //i = ignore the case
              const nameRegex = new RegExp("^"+nameParams.toLowerCase(), "i");
-
+             console.log(nameRegex);
              async.waterfall([
                  function(callback){
                      if(req.body.message){
@@ -103,6 +104,8 @@ module.exports = function(async, Users,Message){
                  },
 
                  function(data, callback){
+                 console.log("Data::");
+                 console.log(data);
                      if(req.body.message){
                          const newMessage = new Message();
                          newMessage.sender = req.user._id;
@@ -126,7 +129,7 @@ module.exports = function(async, Users,Message){
                  res.redirect('/chat/'+req.params.name);
              });
 
-            // FriendResult.PostRequest(req, res, '/chat/'+req.params.name);
+             FriendResult.PostRequest(req, res, '/chat/'+req.params.name);
 
         }
     }
