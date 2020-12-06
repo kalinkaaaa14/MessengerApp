@@ -24,7 +24,7 @@ $(document).ready(function(){
             })
         }
 
-       // ShowImage(this);
+        ShowImage(this);
     });
 
 
@@ -34,15 +34,15 @@ $(document).ready(function(){
         var country = $('#country').val();
         var gender = $('#gender').val();
         var mantra = $('#mantra').val();
-        var userImage = $('#add-input').val();
-       // var image = $('#user-image').val();
+        var upload = $('#add-input').val();
+       var image = $('#user-image').val();
 
          var valid = true;
 
-    //     if(upload === ''){
-    //         $('#add-input').val(image);
-    //     }
-    //
+         if(upload === ''){
+             $('#add-input').val(image);
+         }
+
          if(username == '' || fullname == '' || country == '' || gender == '' || mantra == ''){
              valid = false;
              $('#error').html('<div class="alert alert-danger">You cannot submit an empty field</div>');
@@ -61,7 +61,7 @@ $(document).ready(function(){
                      gender: gender,
                      country: country,
                      mantra: mantra,
-                     upload: userImage
+                     upload: upload
                  },
                  success: function(){
                      setTimeout(function(){
@@ -85,4 +85,5 @@ function ShowImage(input){
         reader.readAsDataURL(input.files[0]);
     }
 }
+
 

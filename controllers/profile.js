@@ -1,10 +1,10 @@
-module.exports = function(async, Users,Message, aws, formidable){
+module.exports = function(async, Users,Message, aws, formidable, FriendResult){
     return {
         SetRouting: function(router){
             router.get('/settings/profile', this.getProfilePage);
 
             router.post('/userupload', aws.Upload.any(), this.userUpload);
-            //router.post('/settings/profile', this.postProfilePage);
+            router.post('/settings/profile', this.postProfilePage);
 
             //router.get('/profile/:name', this.overviewPage);
             //router.post('/profile/:name', this.overviewPostPage);
@@ -61,57 +61,58 @@ module.exports = function(async, Users,Message, aws, formidable){
                 res.render('user/profile', {title: 'Footballkik - Profile', user:req.user, data: result1, chat:result2});
             });
          },
-        //
-        // postProfilePage: function(req, res){
-        //     FriendResult.PostRequest(req, res, '/settings/profile');
-        //
-        //     async.waterfall([
-        //         function(callback){
-        //             Users.findOne({'_id':req.user._id}, (err, result) => {
-        //                 callback(err, result);
-        //             })
-        //         },
-        //
-        //         function(result, callback){
-        //             if(req.body.upload === null || req.body.upload === ''){
-        //                 Users.updateOne({
-        //                         '_id':req.user._id
-        //                     },
-        //                     {
-        //                         username: req.body.username,
-        //                         fullname: req.body.fullname,
-        //                         mantra: req.body.mantra,
-        //                         gender: req.body.gender,
-        //                         country: req.body.country,
-        //                         userImage: result.userImage
-        //                     },
-        //                     {
-        //                         upsert: true
-        //                     }, (err, result) => {
-        //                         res.redirect('/settings/profile');
-        //                     })
-        //             } else if(req.body.upload !== null || req.body.upload !== ''){
-        //                 Users.updateOne({
-        //                         '_id':req.user._id
-        //                     },
-        //                     {
-        //                         username: req.body.username,
-        //                         fullname: req.body.fullname,
-        //                         mantra: req.body.mantra,
-        //                         gender: req.body.gender,
-        //                         country: req.body.country,
-        //                         userImage: req.body.upload
-        //                     },
-        //                     {
-        //                         upsert: true
-        //                     }, (err, result) => {
-        //                         res.redirect('/settings/profile');
-        //                     })
-        //             }
-        //         }
-        //     ]);
-        // },
-        //
+
+         postProfilePage: function(req, res){
+             FriendResult.PostRequest(req, res, '/settings/profile');
+
+             async.waterfall([
+                 function(callback){
+                     Users.findOne({'_id':req.user._id}, (err, result) => {
+                         callback(err, result);
+                     })
+                 },
+
+                 function(result, callback){
+                     if(req.body.upload === null || req.body.upload === ''){
+                         Users.updateOne({
+                                 '_id':req.user._id
+                             },
+                             {
+                                 username: req.body.username,
+                                 fullname: req.body.fullname,
+                                 mantra: req.body.mantra,
+                                 gender: req.body.gender,
+                                 country: req.body.country,
+                                 userImage: result.userImage
+                             },
+                             {
+                                 upsert: true
+                             }, (err, result) => {
+                             console.log(result);
+                                 res.redirect('/settings/profile');
+                             })
+                     } else if(req.body.upload !== null || req.body.upload !== ''){
+                         Users.updateOne({
+                                 '_id':req.user._id
+                             },
+                             {
+                                 username: req.body.username,
+                                 fullname: req.body.fullname,
+                                 mantra: req.body.mantra,
+                                 gender: req.body.gender,
+                                 country: req.body.country,
+                                 userImage: req.body.upload
+                             },
+                             {
+                                 upsert: true
+                             }, (err, result) => {
+                                 res.redirect('/settings/profile');
+                             })
+                     }
+                 }
+             ]);
+         },
+
         userUpload: function(req, res){
             const form = new formidable.IncomingForm();
 
