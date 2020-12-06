@@ -215,8 +215,8 @@
 
 
 <div class="col-md-12">
-    <form action="#" method="post">
-npm         <div class="form-group ad-30" style="margin-top:8px;">
+    <form action="/results" method="post">
+         <div class="form-group ad-30" style="margin-top:8px;">
             <div class="input-group search-style">
                 <input class="form-control new-search-bar"  name="country" id="search" placeholder="Enter Your Club Name" type="text">
                 <span class="input-group-btn">
@@ -227,6 +227,8 @@ npm         <div class="form-group ad-30" style="margin-top:8px;">
     </form>
 </div>
 <div class="col-md-12">
+    <input type="hidden" id="name-user" value="<%= user.username%>">
+    <input type="hidden" id="name-image" value="<%= user.userImage%>">
     <div class="">
         <div class="row">
             <div class="col-md-3">
